@@ -7,7 +7,7 @@ services:
         - "8081:8080"
         container_name: go_api
         volumes:
-        - ./src:/app
+        - ./src:/go_api_app
         tty: true
 
     db:
