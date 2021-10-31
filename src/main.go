@@ -2,39 +2,51 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"go_api_app/api"
 	"log"
 	"net/http"
 )
 
-type Article struct {
-	Title string `json:"Title"`
-	Desc string `json:"desc"`
-	Content string `json:"Content"`
+type baseResponse struct {
+	Status int `json:"status"`
 }
 
-type Articles []Article
+type allApiResponse struct {
+	baseResponse
+	Result struct {
+		Qiita   []api.Qiita          `json:"qiita"`
+		Weather []api.CurrentWeather `json:"weather"`
+		Coin    api.Coin             `json:"coin"`
+	} `json:"result"`
+}
 
+func callAllApi(w http.ResponseWriter, r *http.Request) {
+	cq := make(chan []api.Qiita)
+	cw := make(chan []api.CurrentWeather)
+	cc := make(chan api.Coin)
+	response := new(allApiResponse)
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome")
-	fmt.Println("endpoint hithomepage")
+	go api.FetchWeather(cw)
+	go api.FetchCoin(cc)
+	go api.FetchQiita(cq)
+
+	for i := 0; i < 3; i++ {
+		select {
+		case vq := <-cq:
+			response.Result.Qiita = vq
+		case vc := <-cc:
+			response.Result.Coin = vc
+		case vw := <-cw:
+			response.Result.Weather = vw
+		}
+	}
+	response.Status = 200
+	json.NewEncoder(w).Encode(response)
 }
 
 func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/article", article)
+	http.HandleFunc("/", callAllApi)
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func article(w http.ResponseWriter, r *http.Request) {
-	articles := Articles{}
-	for i := 0; i < 10; i++ {
-		title := "Hello_%d"
-		articles = append(articles,Article{Title: fmt.Sprintf(title, i), Desc: "Desc", Content: "Article Content"})
-	}
-	fmt.Println("endpoint hithomepage")
-	json.NewEncoder(w).Encode(articles)
 }
 
 func main() {

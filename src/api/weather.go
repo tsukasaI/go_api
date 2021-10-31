@@ -2,9 +2,13 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type WeatherJsonRes struct {
@@ -73,8 +77,17 @@ type CurrentWeather struct {
 	Description string  `json:"description"`
 }
 
-func FetchWeather() []CurrentWeather {
-	resp, err := http.Get("https://api.openweathermap.org/data/2.5/forecast?zip=154-0001,jp&APPID=30fa7c31bb1964dd774b8e7d7971c5d4&units=metric")
+func EnvLoad() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
+
+func FetchWeather(cw chan []CurrentWeather) {
+	EnvLoad()
+	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=154-0001,jp&APPID=%s", os.Getenv("OPEN_WEATHER_API_KEY"))
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -102,5 +115,5 @@ func FetchWeather() []CurrentWeather {
 		summary = append(summary, tmp)
 	}
 
-	return summary
+	cw <- summary
 }

@@ -58,7 +58,7 @@ type Qiita struct {
 	Description string `json:"description"`
 }
 
-func FetchQiita() []Qiita {
+func FetchQiita(cq chan []Qiita) {
 	resp, err := http.Get("https://qiita.com/api/v2/items?query=tag%3Ago")
 	if err != nil {
 		log.Fatal(err)
@@ -84,5 +84,5 @@ func FetchQiita() []Qiita {
 		summary = append(summary, tmp)
 	}
 
-	return summary
+	cq <- summary
 }

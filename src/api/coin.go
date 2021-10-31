@@ -33,11 +33,11 @@ type CoinJsonRes struct {
 
 type Coin struct {
 	Date    time.Time `json:"date"`
-	JPYRate float64   `json:"rate"`
-	USDRate float64   `json:"rate"`
+	JPYRate float64   `json:"jpyRate"`
+	USDRate float64   `json:"usdRate"`
 }
 
-func FetchCoin() Coin {
+func FetchCoin(cc chan Coin) {
 	resp, err := http.Get("https://api.coindesk.com/v1/bpi/currentprice/JPY.json")
 	if err != nil {
 		log.Fatal(err)
@@ -58,5 +58,5 @@ func FetchCoin() Coin {
 		data.Bpi.Jpy.RateFloat,
 	}
 
-	return summary
+	cc <- summary
 }
