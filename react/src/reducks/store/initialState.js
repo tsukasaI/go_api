@@ -3,7 +3,6 @@ const initialState = {
         auth: false,
         name: '',
         token: '',
-
     }
 }
 
