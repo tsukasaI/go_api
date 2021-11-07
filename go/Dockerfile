@@ -1,7 +1,7 @@
 FROM golang:latest
 
 WORKDIR /go_api_app
-COPY ./src /go_api_app
+COPY . /go_api_app
 
 ENV CGO_ENABLED=0 \
     GOOS=linux \
