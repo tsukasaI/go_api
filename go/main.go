@@ -21,6 +21,8 @@ type allApiResponse struct {
 }
 
 func callAllApi(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	cq := make(chan []api.Qiita)
 	cw := make(chan []api.CurrentWeather)
 	cc := make(chan api.Coin)
