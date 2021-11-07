@@ -1,11 +1,29 @@
-import { Headline } from "./components/index";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom'
+import { Headline } from "./views/components/index";
 
 function App() {
   return (
-    <div className="App">
-      <Headline />
-    </div>
+    <BrowserRouter>
+      <h1>Router</h1>
+      <Routes>
+        <Route path="/" element={ <Headline /> } />
+        <Route path="/about" element={ <About /> } />
+        <Route path="/Contact" element={ <Contact />} />
+      </Routes>
+    </BrowserRouter>
   );
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Contact() {
+  return <h2>Contact</h2>;
 }
 
 export default App;
