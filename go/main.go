@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"go_api_app/api"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -46,8 +47,29 @@ func callAllApi(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// type user struct {
+// 	baseResponse
+// 	User struct {
+// 		Name  string `json:"name"`
+// 		Token string `json:"Token"`
+// 	}
+// }
+
+func userLogin(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// response := new(user)
+	body, _ := ioutil.ReadAll(r.Body)
+
+	var posted interface{}
+	json.Unmarshal(body, &posted)
+
+	json.NewEncoder(w).Encode(posted)
+}
+
 func handleRequests() {
 	http.HandleFunc("/", callAllApi)
+	http.HandleFunc("/login", userLogin)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
