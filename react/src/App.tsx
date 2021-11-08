@@ -4,10 +4,10 @@ import {
   Route,
 } from 'react-router-dom'
 import { Headline, Login } from "./views/pages/index";
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 function App() {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const selector = useSelector((state) => state)
   console.log(selector.user)
   return (

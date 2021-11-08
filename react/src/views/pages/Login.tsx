@@ -1,25 +1,27 @@
 import axios from 'axios'
 // import { useEffect, useState } from 'react';
 import { getUserToken } from '../../reducks/user/selectors'
-import {useSelector} from 'react-redux'
-
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { loginAction } from '../../reducks/user/actions'
 
 const Login = () => {
   const login = async () => {
-    console.log('click')
-    console.log(token)
-    console.log(selector)
-    const res = await axios.post('http://localhost:8087/login', {name: 'hogehoge', token: 'acs'})
-    console.log(res);
+    const res = await axios.post('http://localhost:8087/login', { name: 'hogehoge', token: 'acs' })
+    dispatch(loginAction({
+      name: res.data.name,
+      token: res.data.token,
+    }))
   }
 
   const selector = useSelector(state => state)
   const token = getUserToken(selector)
+  const dispatch = useDispatch()
 
   return (
     <div>
       <h3>{token}</h3>
-      <button onClick={login}>送信</button>
+      <button onClick={login}>ログイン</button>
     </div>
   )
 }

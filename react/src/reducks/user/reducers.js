@@ -3,7 +3,7 @@ import initialState from '../store/initialState'
 
 export const UserReducer = (state = initialState.user, action) => {
     switch (action.type) {
-        case action.LOGIN:
+        case Actions.LOGIN:
             return {
                 ...state,
                 ...action.payload,

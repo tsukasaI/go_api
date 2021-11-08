@@ -1,5 +1,5 @@
 export const LOGIN: string = "LOGIN"
-export const login = (userState) => {
+export const loginAction = (userState) => {
     return {
         type: "LOGIN",
         payload: {
@@ -11,7 +11,7 @@ export const login = (userState) => {
 }
 
 export const LOGOUT: string = "LOGOUT"
-export const logout = () => {
+export const logoutAction = () => {
     return {
         type: "LOGOUT",
         payload: {
