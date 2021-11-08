@@ -47,13 +47,13 @@ func callAllApi(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// type user struct {
-// 	baseResponse
-// 	User struct {
-// 		Name  string `json:"name"`
-// 		Token string `json:"Token"`
-// 	}
-// }
+type userResponse struct {
+	baseResponse
+	User struct {
+		Name  string `json:"name"`
+		Token string `json:"token"`
+	} `json:"user"`
+}
 
 func userLogin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -64,7 +64,12 @@ func userLogin(w http.ResponseWriter, r *http.Request) {
 	var posted interface{}
 	json.Unmarshal(body, &posted)
 
-	json.NewEncoder(w).Encode(posted)
+	resp := new(userResponse)
+	resp.Status = 200
+	resp.User.Name = "sampleName"
+	resp.User.Token = "sampleTOken"
+
+	json.NewEncoder(w).Encode(resp)
 }
 
 func handleRequests() {

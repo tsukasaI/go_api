@@ -13,7 +13,7 @@ export const store = createStore(history)
 
 ReactDOM.render(
   <Provider store={store}>
-      <App />
+    <App />
   </Provider>,
   document.getElementById('root')
 );
