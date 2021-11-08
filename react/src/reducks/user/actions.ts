@@ -1,5 +1,5 @@
 export const LOGIN: string = "LOGIN"
-export const loginAction = (userState) => {
+export const loginAction = (userState: any) => {
     return {
         type: "LOGIN",
         payload: {

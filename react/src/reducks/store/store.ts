@@ -4,7 +4,7 @@ import {
 } from 'redux'
 import { UserReducer } from '../user/reducers'
 
-export default function createStore(history) {
+export default function createStore(history: any) {
   return reduxCreateStore(
     combineReducers({
       user: UserReducer,

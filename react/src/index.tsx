@@ -1,14 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import createStore from './reducks/store/store';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import * as History from 'history'
-import * as serviceWorker from './serviceWorker'
+// import * as serviceWorker from 'serviceWorker'
+import createStore from 'reducks/store/store'
+import 'index.css'
+import App from 'App'
+import reportWebVitals from 'reportWebVitals'
 
-const history = History.createBrowserHistory()
+
+const history :any = History.createBrowserHistory()
 export const store = createStore(history)
 
 ReactDOM.render(

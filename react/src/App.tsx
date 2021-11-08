@@ -3,13 +3,13 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { Headline, Login } from "./views/pages/index";
+import { Headline, Login } from "views/pages/index";
 import {useSelector} from 'react-redux'
 
 function App() {
   // const dispatch = useDispatch()
   const selector = useSelector((state) => state)
-  console.log(selector.user)
+  console.log(selector)
   return (
     <BrowserRouter>
       <h1>Router</h1>

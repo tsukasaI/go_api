@@ -1,6 +1,6 @@
 import  {createSelector} from 'reselect'
 
-const userSelector = (state) => state.user
+const userSelector = (state: any) => state.user
 
 export const getUserToken = createSelector(
     [userSelector],

@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux'
 import { loginAction } from '../../reducks/user/actions'
 
 const Login = () => {
-  const nameRef = useRef()
-  const passwordRef = useRef()
+  const nameRef = useRef<any>(null)
+  const passwordRef = useRef<any>(null)
 
   const selector = useSelector(state => state)
   const token = getUserToken(selector)
