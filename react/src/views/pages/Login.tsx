@@ -1,28 +1,31 @@
 import axios from 'axios'
 import { useRef } from 'react';
-import { getUserToken } from '../../reducks/user/selectors'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { loginAction } from '../../reducks/user/actions'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { getUserToken } from 'reducks/user/selectors'
+import { loginAction } from 'reducks/user/actions'
 
 const Login = () => {
-  const nameRef = useRef<any>(null)
-  const passwordRef = useRef<any>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const selector = useSelector(state => state)
   const token = getUserToken(selector)
   const dispatch = useDispatch()
 
   const check = async () => {
-    const res = await axios.post('http://localhost:8087/login', {
-       name: nameRef.current.value,
-       token: passwordRef.current.value,
-    })
-    console.log(res)
-    dispatch(loginAction(res.data.user))
+    try {
+      const res = await axios.post('http://localhost:8087/login', {
+         name: nameRef.current?.value,
+         token: passwordRef.current?.value,
+      })
+      dispatch(loginAction(res.data.user))
+    } catch (error) {
+      alert(error)
+      console.log(error)
+    }
+    console.log(selector)
   }
-
-
 
   return (
     <div>
