@@ -4,21 +4,8 @@ import {
   Route,
 } from 'react-router-dom'
 import { Headline, Login } from "views/pages/index";
-import { useSelector } from 'react-redux'
-
-type State = {
-  user: User
-}
-
-type User = {
-  auth: boolean,
-  name: string,
-  token: string
-}
 
 function App() {
-  // const dispatch = useDispatch()
-  const selector = useSelector((state: State) => state)
   return (
     <BrowserRouter>
       <h1>Router</h1>
