@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import * as History from 'history'
 // import * as serviceWorker from 'serviceWorker'
 import createStore from 'reducks/store/store'
 import 'index.css'
@@ -9,8 +8,7 @@ import App from 'App'
 import reportWebVitals from 'reportWebVitals'
 
 
-const history :any = History.createBrowserHistory()
-export const store = createStore(history)
+export const store = createStore()
 
 ReactDOM.render(
   <Provider store={store}>

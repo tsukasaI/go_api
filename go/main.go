@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"go_api_app/api"
+	"go_api_app/mysql"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,6 +12,11 @@ import (
 
 type baseResponse struct {
 	Status int `json:"status"`
+}
+
+type errorResponse struct {
+	baseResponse
+	Message error `json:"message"`
 }
 
 type allApiResponse struct {
@@ -72,9 +79,41 @@ func userLogin(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+func userRegister(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// response := new(user)
+	body, _ := ioutil.ReadAll(r.Body)
+
+	var posted struct {
+		Name     string
+		Password string
+	}
+	json.Unmarshal(body, &posted)
+
+	fmt.Printf("%v\n", posted)
+
+	err := mysql.Register(posted)
+	if err != nil {
+		resp := new(errorResponse)
+		resp.Status = 500
+		resp.Message = err
+		json.NewEncoder(w).Encode(resp)
+	} else {
+		resp := new(userResponse)
+		resp.Status = 200
+		resp.User.Name = posted.Name
+		resp.User.Token = "sampleTOken"
+
+		json.NewEncoder(w).Encode(resp)
+	}
+
+}
+
 func handleRequests() {
 	http.HandleFunc("/", callAllApi)
 	http.HandleFunc("/login", userLogin)
+	http.HandleFunc("/register", userRegister)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 

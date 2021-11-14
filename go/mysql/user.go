@@ -1,4 +1,4 @@
-package main
+package mysql
 
 import (
 	"database/sql"
@@ -20,43 +20,46 @@ func EnvLoad() {
 	}
 }
 
-func main() {
-	Register()
-	// EnvLoad()
-	// dsn := fmt.Sprintf("%s:%s@tcp(mysql)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_DATABASE"))
-	// db, err := sql.Open("mysql", dsn)
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// defer db.Close()
+// func main() {
+// 	err := Register()
+// 	fmt.Printf("%v\n", err)
+// EnvLoad()
+// dsn := fmt.Sprintf("%s:%s@tcp(mysql)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_DATABASE"))
+// db, err := sql.Open("mysql", dsn)
+// if err != nil {
+// 	panic(err.Error())
+// }
+// if err != nil {
+// 	panic(err.Error())
+// }
+// defer db.Close()
 
-	// rows, err := db.Query("select `name`, `password` from `users`")
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// defer rows.Close()
+// rows, err := db.Query("select `name`, `password` from `users`")
+// if err != nil {
+// 	panic(err.Error())
+// }
+// defer rows.Close()
 
-	// var name string
-	// var password string
-	// for rows.Next() {
-	// 	err := rows.Scan(&name, &password)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	fmt.Printf("ID: %v, Name: %v\n", name, password)
-	// }
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
+// var name string
+// var password string
+// for rows.Next() {
+// 	err := rows.Scan(&name, &password)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Printf("ID: %v, Name: %v\n", name, password)
+// }
+// if err != nil {
+// 	panic(err.Error())
+// }
+// }
+
+type RequestBody struct {
+	Name     string
+	Password string
 }
 
-func Register() (err error) {
-	tmpName := "tmpName1"
-	tmpPass := "tmpPass"
-
+func Register(r RequestBody) (err error) {
 	EnvLoad()
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(mysql)/%s",
@@ -66,41 +69,35 @@ func Register() (err error) {
 	)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		return err
+		return fmt.Errorf("mysql connection error: %w", err)
 	}
-	if err != nil {
-		return err
-	}
+
 	defer db.Close()
 
-	rows, err := db.Query("select `name` from `users` where `name` = ?", tmpName)
+	rows, err := db.Query("select `name` from `users` where `name` = ?", r.Name)
 	if err != nil {
-		return err
+		return fmt.Errorf("query execution error: %w", err)
 	}
 	defer rows.Close()
 
 	if rows.Next() {
-		return errors.New("the name is already registered")
+		return fmt.Errorf(
+			"application error: %w",
+			errors.New("the name is already registered"),
+		)
 	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(tmpPass), 10)
+	hash, err := bcrypt.GenerateFromPassword([]byte(r.Password), 10)
 	if err != nil {
 		return err
 	}
-
-	jst, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		return err
-	}
-	local := time.Now().In(jst)
 
 	_, err = db.Query(
 		"insert into `users` (`name`, `password`, `created_at`, `updated_at`) values (?, ?, ?, ?)",
-		tmpName,
+		r.Name,
 		hash,
-		local.Add(9*time.Hour),
-		local.Add(9*time.Hour),
+		time.Now().Add(9*time.Hour),
+		time.Now().Add(9*time.Hour),
 	)
-	fmt.Printf("%V\n%v\n", err, local)
 
 	return err
 }

@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { Headline, Login } from "views/pages/index";
+import { Headline, Login, Register } from "views/pages/index";
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
         <Route path="/" element={<Headline />} />
         <Route path="login" element={<Login />} />
         <Route path="/about" element={<About />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/Contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
