@@ -27,13 +27,14 @@ services:
         container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: go_api_prac
-            MYSQL_USER: go_api_prac
-            MYSQL_PASSWORD: go_api_prac
+            MYSQL_DATABASE: em_with_go
+            MYSQL_USER: em_with_go
+            MYSQL_PASSWORD: em_with_go
             TZ: "Asia/Tokyo"
 
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./mysql/data:/var/lib/mysql
         ports:
             - 3306:3306
