@@ -87,13 +87,20 @@ func Register() (err error) {
 		return err
 	}
 
+	jst, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		return err
+	}
+	local := time.Now().In(jst)
+
 	_, err = db.Query(
 		"insert into `users` (`name`, `password`, `created_at`, `updated_at`) values (?, ?, ?, ?)",
 		tmpName,
 		hash,
-		time.Now(),
-		time.Now(),
+		local.Add(9*time.Hour),
+		local.Add(9*time.Hour),
 	)
+	fmt.Printf("%V\n%v\n", err, local)
 
 	return err
 }
