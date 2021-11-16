@@ -8,6 +8,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+
+	jwtmiddleware "github.com/auth0/go-jwt-middleware"
+	"github.com/form3tech-oss/jwt-go"
 )
 
 type baseResponse struct {
@@ -82,7 +86,6 @@ func userLogin(w http.ResponseWriter, r *http.Request) {
 func userRegister(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// response := new(user)
 	body, _ := ioutil.ReadAll(r.Body)
 
 	var posted struct {
@@ -110,11 +113,42 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// func testFunc(w http.ResponseWriter, r *http.Request) {
+// 	user := r.Context().Value("user")
+// 	fmt.Printf("%v\n", user)
+// 	// fmt.Fprintf(w, "This is an authenticated request")
+// 	// fmt.Fprintf(w, "Claim content:\n")
+// 	// for k, v := range user.(*jwt.Token).Claims.(jwt.MapClaims) {
+// 	// 	fmt.Fprintf(w, "%s :\t%#v\n", k, v)
+// 	// }
+// }
+
+var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("%v\n", r.Context())
+	user := r.Context().Value("user")
+	fmt.Printf("%v\n", user)
+	fmt.Fprintf(w, "This is an authenticated request\n")
+	fmt.Fprintf(w, "Claim content:\n")
+	for k, v := range user.(*jwt.Token).Claims.(jwt.MapClaims) {
+		fmt.Fprintf(w, "%s :\t%#v\n", k, v)
+	}
+})
+
 func handleRequests() {
 	http.HandleFunc("/", callAllApi)
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	jwtMiddleware := jwtmiddleware.New(jwtmiddleware.Options{
+		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+			return []byte(os.Getenv("SECRET_KEY")), nil
+		},
+		SigningMethod: jwt.SigningMethodHS256,
+	})
+
+	app := jwtMiddleware.Handler(testFunc)
+
+	log.Fatal(http.ListenAndServe(":8080", app))
 }
 
 func main() {
