@@ -135,10 +135,6 @@ var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 func handleRequests() {
-	http.HandleFunc("/", callAllApi)
-	http.HandleFunc("/login", userLogin)
-	http.HandleFunc("/register", userRegister)
-
 	jwtMiddleware := jwtmiddleware.New(jwtmiddleware.Options{
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("SECRET_KEY")), nil
@@ -146,9 +142,12 @@ func handleRequests() {
 		SigningMethod: jwt.SigningMethodHS256,
 	})
 
-	app := jwtMiddleware.Handler(testFunc)
+	http.HandleFunc("/", callAllApi)
+	http.HandleFunc("/login", userLogin)
+	http.HandleFunc("/register", userRegister)
+	http.Handle("/test", jwtMiddleware.Handler(testFunc))
 
-	log.Fatal(http.ListenAndServe(":8080", app))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func main() {
