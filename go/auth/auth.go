@@ -1,15 +1,15 @@
-package main
+package auth
 
 import (
 	"fmt"
 	"os"
 	"time"
 
-	// "github.com/auth0/go-jwt-middleware"
-	"github.com/golang-jwt/jwt/v4"
+	jwtmiddleware "github.com/auth0/go-jwt-middleware"
+	"github.com/form3tech-oss/jwt-go"
 )
 
-func main() {
+func createToken() {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["admin"] = true
@@ -25,9 +25,9 @@ func main() {
 }
 
 // JwtMiddleware check token
-// var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
-// 	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-// 		return []byte(os.Getenv("SECRET_KEY")), nil
-// 	},
-// 	SigningMethod: jwt.SigningMethodHS256,
-// })
+var JwtMiddleware *jwtmiddleware.JWTMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
+	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	},
+	SigningMethod: jwt.SigningMethodHS256,
+})

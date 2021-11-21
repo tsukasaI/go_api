@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"go_api_app/api"
+	"go_api_app/auth"
 	"go_api_app/mysql"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 
-	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	"github.com/form3tech-oss/jwt-go"
 )
 
@@ -113,16 +112,6 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// func testFunc(w http.ResponseWriter, r *http.Request) {
-// 	user := r.Context().Value("user")
-// 	fmt.Printf("%v\n", user)
-// 	// fmt.Fprintf(w, "This is an authenticated request")
-// 	// fmt.Fprintf(w, "Claim content:\n")
-// 	// for k, v := range user.(*jwt.Token).Claims.(jwt.MapClaims) {
-// 	// 	fmt.Fprintf(w, "%s :\t%#v\n", k, v)
-// 	// }
-// }
-
 var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("%v\n", r.Context())
 	user := r.Context().Value("user")
@@ -135,17 +124,10 @@ var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 func handleRequests() {
-	jwtMiddleware := jwtmiddleware.New(jwtmiddleware.Options{
-		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("SECRET_KEY")), nil
-		},
-		SigningMethod: jwt.SigningMethodHS256,
-	})
-
 	http.HandleFunc("/", callAllApi)
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
-	http.Handle("/test", jwtMiddleware.Handler(testFunc))
+	http.Handle("/test", auth.JwtMiddleware.Handler(testFunc))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
