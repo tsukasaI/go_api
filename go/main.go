@@ -95,7 +95,7 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%v\n", posted)
 
-	err := mysql.Register(posted)
+	token, err := mysql.Register(posted)
 	if err != nil {
 		resp := new(errorResponse)
 		resp.Status = 500
@@ -105,7 +105,7 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 		resp := new(userResponse)
 		resp.Status = 200
 		resp.User.Name = posted.Name
-		resp.User.Token = "sampleTOken"
+		resp.User.Token = token
 
 		json.NewEncoder(w).Encode(resp)
 	}

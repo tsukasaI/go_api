@@ -9,19 +9,17 @@ import (
 	"github.com/form3tech-oss/jwt-go"
 )
 
-func createToken() {
+func CreateToken(name string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["admin"] = true
 	claims["sub"] = "54546557354"
-	claims["name"] = "taro"
+	claims["name"] = name
 	claims["iat"] = time.Now().Unix()
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 6).Unix()
 	fmt.Printf("claims: %v\n", claims)
 
-	tokenSting, _ := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
-	fmt.Printf("tokenStr: %v\n", tokenSting)
-
+	return token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 }
 
 // JwtMiddleware check token

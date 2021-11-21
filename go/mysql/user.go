@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"go_api_app/auth"
 	"log"
 	"os"
 	"time"
@@ -59,7 +60,7 @@ type RequestBody struct {
 	Password string
 }
 
-func Register(r RequestBody) (err error) {
+func Register(r RequestBody) (string, error) {
 	EnvLoad()
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(mysql)/%s",
@@ -69,26 +70,26 @@ func Register(r RequestBody) (err error) {
 	)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		return fmt.Errorf("mysql connection error: %w", err)
+		return "", fmt.Errorf("mysql connection error: %w", err)
 	}
 
 	defer db.Close()
 
 	rows, err := db.Query("select `name` from `users` where `name` = ?", r.Name)
 	if err != nil {
-		return fmt.Errorf("query execution error: %w", err)
+		return "", fmt.Errorf("query execution error: %w", err)
 	}
 	defer rows.Close()
 
 	if rows.Next() {
-		return fmt.Errorf(
+		return "", fmt.Errorf(
 			"application error: %w",
 			errors.New("the name is already registered"),
 		)
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(r.Password), 10)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	_, err = db.Query(
@@ -99,5 +100,7 @@ func Register(r RequestBody) (err error) {
 		time.Now().Add(9*time.Hour),
 	)
 
-	return err
+	token, _ := auth.CreateToken(r.Name)
+
+	return token, err
 }
