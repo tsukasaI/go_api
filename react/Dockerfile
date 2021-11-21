@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:16-buster-slim
 
 ENV TZ Asia/Tokyo
 

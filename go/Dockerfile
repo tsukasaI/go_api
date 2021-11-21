@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:1.17
 
 WORKDIR /go_api_app
 COPY . /go_api_app
