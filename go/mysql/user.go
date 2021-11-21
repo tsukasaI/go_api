@@ -21,40 +21,6 @@ func EnvLoad() {
 	}
 }
 
-// func main() {
-// 	err := Register()
-// 	fmt.Printf("%v\n", err)
-// EnvLoad()
-// dsn := fmt.Sprintf("%s:%s@tcp(mysql)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_DATABASE"))
-// db, err := sql.Open("mysql", dsn)
-// if err != nil {
-// 	panic(err.Error())
-// }
-// if err != nil {
-// 	panic(err.Error())
-// }
-// defer db.Close()
-
-// rows, err := db.Query("select `name`, `password` from `users`")
-// if err != nil {
-// 	panic(err.Error())
-// }
-// defer rows.Close()
-
-// var name string
-// var password string
-// for rows.Next() {
-// 	err := rows.Scan(&name, &password)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Printf("ID: %v, Name: %v\n", name, password)
-// }
-// if err != nil {
-// 	panic(err.Error())
-// }
-// }
-
 type RequestBody struct {
 	Name     string
 	Password string
@@ -103,4 +69,34 @@ func Register(r RequestBody) (string, error) {
 	token, _ := auth.CreateToken(r.Name)
 
 	return token, err
+}
+
+func Login(r RequestBody) (string, error) {
+	EnvLoad()
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(mysql)/%s",
+		os.Getenv("MYSQL_USER"),
+		os.Getenv("MYSQL_PASSWORD"),
+		os.Getenv("MYSQL_DATABASE"),
+	)
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return "", fmt.Errorf("mysql connection error: %w", err)
+	}
+
+	defer db.Close()
+
+	var password string
+
+	err = db.QueryRow("select `password` from `users` where `name` = ?", r.Name).Scan(&password)
+	if err != nil {
+		return "", fmt.Errorf("query execution error: %w", err)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte("password"))
+	if err != nil {
+		return "", fmt.Errorf("bcrypt: %w", err)
+	}
+
+	return password, err
 }

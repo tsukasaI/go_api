@@ -71,15 +71,27 @@ func userLogin(w http.ResponseWriter, r *http.Request) {
 	// response := new(user)
 	body, _ := ioutil.ReadAll(r.Body)
 
-	var posted interface{}
+	var posted struct {
+		Name     string
+		Password string
+	}
 	json.Unmarshal(body, &posted)
 
-	resp := new(userResponse)
-	resp.Status = 200
-	resp.User.Name = "sampleName"
-	resp.User.Token = "sampleTOken"
+	token, err := mysql.Login(posted)
 
-	json.NewEncoder(w).Encode(resp)
+	if err != nil {
+		resp := new(errorResponse)
+		resp.Status = 500
+		resp.Message = err
+		json.NewEncoder(w).Encode(resp)
+	} else {
+		resp := new(userResponse)
+		resp.Status = 200
+		resp.User.Name = posted.Name
+		resp.User.Token = token
+
+		json.NewEncoder(w).Encode(resp)
+	}
 }
 
 func userRegister(w http.ResponseWriter, r *http.Request) {
