@@ -1,9 +1,13 @@
+type User = {
+    name: String,
+    token: String
+}
+
 export const LOGIN: string = "LOGIN"
-export const loginAction = (userState: any) => {
+export const loginAction = (userState: User) => {
     return {
         type: "LOGIN",
         payload: {
-            auth: true,
             name: userState.name,
             token: userState.token,
         }
@@ -15,7 +19,6 @@ export const logoutAction = () => {
     return {
         type: "LOGOUT",
         payload: {
-            auth: false,
             name: '',
             token: '',
         }

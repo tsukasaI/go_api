@@ -4,18 +4,23 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { loginAction } from 'reducks/user/actions'
 
+type User = {
+  name: String,
+  token: String
+}
+
 const Register = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const selector = useSelector(state => state)
+  const selector = useSelector((state: User) => state)
   const dispatch = useDispatch()
 
   const register = async () => {
     console.log(!nameRef.current?.value)
     if (!nameRef.current?.value || !passwordRef.current?.value) {
       alert('nameとpasswordを入力してください');
-      return;
+      return
     }
     try {
       const res = await axios.post('http://localhost:8087/register', {

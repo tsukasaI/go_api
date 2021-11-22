@@ -6,11 +6,7 @@ export const login = () => {
         const state = getState()
         const auth = state.user.auth
         console.log(212312312, getState())
-        // dispatch(loginAction({
-        //     auth: true,
-        //     name: userData.data.name,
-        //     token: userData.data.token,
-        // }))
+
 
     }
 }
