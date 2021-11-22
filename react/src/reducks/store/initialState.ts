@@ -1,5 +1,5 @@
 type User = {
-    auth: boolean
+    darkMode: boolean
     name: string
     token: string
 }
@@ -8,7 +8,7 @@ const initialState: {
     user: User
 } = {
     user: {
-        auth: false,
+        darkMode: false,
         name: '',
         token: '',
     }

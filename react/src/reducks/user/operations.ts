@@ -4,7 +4,7 @@ import axios from 'axios'
 export const login = () => {
     return (dispatch: any, getState: any) => {
         const state = getState()
-        const auth = state.user.auth
+        const darkMode = state.user.darkMode
         console.log(212312312, getState())
 
 
