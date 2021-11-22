@@ -86,7 +86,7 @@ func EnvLoad() {
 
 func FetchWeather(cw chan []CurrentWeather) {
 	EnvLoad()
-	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=154-0001,jp&APPID=%s", os.Getenv("OPEN_WEATHER_API_KEY"))
+	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=154-0001,jp&APPID=%s&units=metric", os.Getenv("OPEN_WEATHER_API_KEY"))
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
