@@ -4,11 +4,12 @@ import {
   Route,
 } from 'react-router-dom'
 import { PageHeadline, PageLogin, PageRegister } from "views/pages/index";
+import { Header } from "views/layouts/index";
 
 function App() {
   return (
     <BrowserRouter>
-      <h1>Router</h1>
+      <Header></Header>
       <Routes>
         <Route path="/" element={<PageHeadline />} />
         <Route path="login" element={<PageLogin />} />

@@ -8,4 +8,4 @@ const PageHeadline = () => {
   )
 }
 
-export default PageHeadline;
+export default PageHeadline
