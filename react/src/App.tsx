@@ -3,17 +3,17 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { Headline, Login, Register } from "views/pages/index";
+import { PageHeadline, PageLogin, PageRegister } from "views/pages/index";
 
 function App() {
   return (
     <BrowserRouter>
       <h1>Router</h1>
       <Routes>
-        <Route path="/" element={<Headline />} />
-        <Route path="login" element={<Login />} />
+        <Route path="/" element={<PageHeadline />} />
+        <Route path="login" element={<PageLogin />} />
         <Route path="/about" element={<About />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<PageRegister />} />
         <Route path="/Contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>

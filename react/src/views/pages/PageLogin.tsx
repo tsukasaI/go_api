@@ -5,16 +5,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUserToken } from 'reducks/user/selectors'
 import { loginAction } from 'reducks/user/actions'
 
-type User = {
-  name: String,
-  token: String
-}
-
 const Login = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const selector = useSelector((state: User) => state)
+  const selector = useSelector((state) => state)
   const token = getUserToken(selector)
   const dispatch = useDispatch()
 

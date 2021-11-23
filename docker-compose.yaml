@@ -9,6 +9,7 @@ services:
         volumes:
             - ./go:/go_api_app
         tty: true
+        command: go run main.go
 
     react:
         build: ./react
