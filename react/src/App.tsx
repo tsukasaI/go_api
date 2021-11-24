@@ -4,12 +4,14 @@ import {
   Route,
 } from 'react-router-dom'
 import { PageHeadline, PageLogin, PageRegister } from "views/pages/index";
-import { Header } from "views/layouts/index";
+import { Header, Footer } from "views/layouts/index";
+import { BaseStyle } from 'views/styles';
 
 function App() {
   return (
     <BrowserRouter>
-      <Header></Header>
+      <BaseStyle />
+      <Header />
       <Routes>
         <Route path="/" element={<PageHeadline />} />
         <Route path="login" element={<PageLogin />} />
@@ -17,6 +19,7 @@ function App() {
         <Route path="/register" element={<PageRegister />} />
         <Route path="/Contact" element={<Contact />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
