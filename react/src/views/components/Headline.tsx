@@ -1,11 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react';
-import styled from "styled-components";
+// import styled from "styled-components";
 
-const Test = styled.div`
-  color: red;
-  font-weight: bold;
-`
 
 type Coin = {
   date: String,
@@ -52,7 +48,6 @@ const Headline = () => {
   return (
     <div>
       <p>{ response }</p>
-      <Test>hogehoges</Test>
     </div>
   )
 }

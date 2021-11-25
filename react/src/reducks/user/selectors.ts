@@ -6,3 +6,8 @@ export const getUserToken = createSelector(
   [userSelector],
   state => state.token
 )
+
+export const getUserName = createSelector(
+  [userSelector],
+  state => state.name
+)
