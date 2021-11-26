@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { PageLogin } from 'views/pages/index'
+import { Navigate } from 'react-router-dom'
+
 import { useSelector } from 'react-redux'
 import { getUserToken } from 'reducks/user/selectors'
 
@@ -13,7 +14,12 @@ const Auth = (props: Props) => {
   const selector = useSelector((state) => state)
   const token = getUserToken(selector)
 
-  return token !== '' ? props.element : <PageLogin />
+  const publicPaths = ['/', '/login', '/register']
+
+  if (!publicPaths.includes(props.path)) {
+    return token !== '' ? props.element : <Navigate to="/login" />
+  }
+  return props.element
 }
 
 export default Auth

@@ -1,6 +1,6 @@
 import { Headline } from "views/components/index";
 
-const PageHeadline = () => {
+const PageHome = () => {
   return (
     <div>
       <Headline />
@@ -8,4 +8,4 @@ const PageHeadline = () => {
   )
 }
 
-export default PageHeadline
+export default PageHome
