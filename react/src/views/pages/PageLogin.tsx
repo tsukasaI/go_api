@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useRef } from 'react';
+import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { getUserToken } from 'reducks/user/selectors'
@@ -16,8 +16,8 @@ const Login = () => {
   const check = async () => {
     try {
       const res = await axios.post('http://localhost:8087/login', {
-         name: nameRef.current?.value,
-         token: passwordRef.current?.value,
+        name: nameRef.current?.value,
+        token: passwordRef.current?.value,
       })
       dispatch(loginAction(res.data.user))
     } catch (error) {
@@ -39,4 +39,4 @@ const Login = () => {
   )
 }
 
-export default Login;
+export default Login

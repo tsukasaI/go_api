@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { useRef } from 'react';
+import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { loginAction } from 'reducks/user/actions'
 
 type User = {
-  name: String,
+  name: String
   token: String
 }
 
@@ -19,7 +19,7 @@ const Register = () => {
   const register = async () => {
     console.log(!nameRef.current?.value)
     if (!nameRef.current?.value || !passwordRef.current?.value) {
-      alert('nameとpasswordを入力してください');
+      alert('nameとpasswordを入力してください')
       return
     }
     try {
@@ -47,4 +47,4 @@ const Register = () => {
   )
 }
 
-export default Register;
+export default Register

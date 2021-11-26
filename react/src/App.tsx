@@ -1,11 +1,8 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom'
-import { PageHeadline, PageLogin, PageRegister } from "views/pages/index";
-import { Header, Footer } from "views/layouts/index";
-import { BaseStyle } from 'views/styles';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { PageHeadline, PageLogin, PageRegister } from 'views/pages/index'
+import { Header, Footer } from 'views/layouts/index'
+import { BaseStyle } from 'views/styles'
+import { Auth } from 'middleware/index'
 
 function App() {
   return (
@@ -14,22 +11,18 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<PageHeadline />} />
-        <Route path="login" element={<PageLogin />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<PageLogin />} />
+
         <Route path="/register" element={<PageRegister />} />
-        <Route path="/Contact" element={<Contact />} />
+
+        <Route
+          path="/test"
+          element={<Auth path="/hogehoge" element={<PageRegister />} />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
-  );
+  )
 }
 
-function About() {
-  return <h2>About</h2>;
-}
-
-function Contact() {
-  return <h2>Contact</h2>;
-}
-
-export default App;
+export default App
