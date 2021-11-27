@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { loginAction } from 'reducks/user/actions'
@@ -31,6 +31,7 @@ const Login = () => {
         token: passwordRef.current?.value,
       })
       dispatch(loginAction(res.data.user))
+      return <Navigate to="/home" />
     } catch (error) {
       console.log(error)
     }

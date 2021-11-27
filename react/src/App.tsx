@@ -1,5 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { PageWelcome, PageHome, PageLogin, PageRegister } from 'views/pages/index'
+import {
+  PageWelcome,
+  PageHome,
+  PageLogin,
+  PageRegister,
+} from 'views/pages/index'
 import { Header, Footer } from 'views/layouts/index'
 import { BaseStyle } from 'views/styles'
 import { Auth } from 'middleware/index'
@@ -10,9 +15,18 @@ function App() {
       <BaseStyle />
       <Header />
       <Routes>
-        <Route path="/" element={<PageWelcome />} />
-        <Route path="/login" element={<PageLogin />} />
-        <Route path="/register" element={<PageRegister />} />
+        <Route
+          path="/"
+          element={<Auth path="/" element={<PageWelcome />} />}
+        />
+        <Route
+          path="/login"
+          element={<Auth path="/login" element={<PageLogin />} />}
+        />
+        <Route
+          path="/register"
+          element={<Auth path="/register" element={<PageRegister />} />}
+        />
 
         <Route
           path="/home"
