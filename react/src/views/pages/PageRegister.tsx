@@ -3,11 +3,18 @@ import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { loginAction } from 'reducks/user/actions'
+import { Input } from 'views/components/base'
+import styled from 'styled-components'
 
 type User = {
   name: String
   token: String
 }
+
+const RegisterWrapper = styled.div`
+  width: 350px;
+  margin: 24px 0;
+`
 
 const Register = () => {
   const nameRef = useRef<HTMLInputElement>(null)
@@ -36,14 +43,18 @@ const Register = () => {
   }
 
   return (
-    <div>
-      <label htmlFor="">name</label>
-      <input type="text" ref={nameRef} />
-      <label htmlFor="">pass</label>
-      <input type="password" ref={passwordRef} />
+    <RegisterWrapper>
+      <Input type="text" placeholder="Username" name="name" ref={nameRef} />
 
-      <button onClick={register}>register</button>
-    </div>
+      <Input type="password" placeholder="Password" ref={passwordRef} />
+
+      <button
+        onClick={register}
+        className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded text-center w-9/12 block mx-auto"
+      >
+        Sign up
+      </button>
+    </RegisterWrapper>
   )
 }
 

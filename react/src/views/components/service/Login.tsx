@@ -54,12 +54,12 @@ const Login = () => {
       <RegisterInduction>
         <p>
           Don't have an account?
-        <Link
-          to="/register"
-          className="text-blue-600 ml-2 hover:text-blue-400 hover:underline"
-        >
-          Sign up
-        </Link>
+          <Link
+            to="/register"
+            className="text-blue-600 ml-2 hover:text-blue-400 hover:underline"
+          >
+            Sign up
+          </Link>
         </p>
       </RegisterInduction>
     </LoginWrapper>
