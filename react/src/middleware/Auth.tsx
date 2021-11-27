@@ -19,7 +19,7 @@ const Auth = (props: Props) => {
   if (!publicPaths.includes(props.path)) {
     return token !== '' ? props.element : <Navigate to="/login" />
   }
-  return props.element
+  return token !== '' ? <Navigate to="/home" /> : props.element
 }
 
 export default Auth
