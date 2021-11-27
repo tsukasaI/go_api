@@ -1,4 +1,4 @@
-import { Headline } from "views/components/index";
+import { Headline } from "views/components/service/index";
 
 const PageHome = () => {
   return (
