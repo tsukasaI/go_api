@@ -9,8 +9,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/form3tech-oss/jwt-go"
+	"github.com/joho/godotenv"
 )
 
 type baseResponse struct {
@@ -40,10 +42,14 @@ type userResponse struct {
 }
 
 func setupHeader(w http.ResponseWriter, r *http.Request) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("Cannot load: %v\n", err)
+	}
+	w.Header().Set("Access-Control-Allow-Origin", os.Getenv("ALLOW_ORIGIN"))
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", os.Getenv("ALLOW_METHIODS"))
+	w.Header().Set("Access-Control-Allow-Headers", os.Getenv("ALLOW_HEDERS"))
 }
 
 var callAllApi = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -73,8 +79,8 @@ var callAllApi = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 func userLogin(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	setupHeader(w, r)
+
 	// response := new(user)
 	body, _ := ioutil.ReadAll(r.Body)
 
@@ -102,8 +108,8 @@ func userLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func userRegister(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	setupHeader(w, r)
+
 	body, _ := ioutil.ReadAll(r.Body)
 
 	var posted struct {
