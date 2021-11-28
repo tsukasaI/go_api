@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 // import styled from "styled-components";
+import { useSelector } from 'react-redux'
+import { getUserToken } from 'reducks/user/selectors'
 
 
 type Coin = {
@@ -36,14 +38,16 @@ type HeadlineResponse = {
 }
 
 const Headline = () => {
+  const selector = useSelector((state) => state)
+  const token = getUserToken(selector)
   const [response, setResponse] = useState<HeadlineResponse>()
   useEffect(() => {
     const fetchHeadline = async () => {
-      const res = await axios.get('http://localhost:8087/')
+      const res = await axios.get('http://localhost:8087/', { headers: { Authorization: "Bearer " + token } })
       setResponse(res.data.result.coin.jpyRate)
     }
     fetchHeadline()
-  }, [])
+  }, [token])
 
   return (
     <div>

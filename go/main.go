@@ -31,8 +31,23 @@ type allApiResponse struct {
 	} `json:"result"`
 }
 
-func callAllApi(w http.ResponseWriter, r *http.Request) {
+type userResponse struct {
+	baseResponse
+	User struct {
+		Name  string `json:"name"`
+		Token string `json:"token"`
+	} `json:"user"`
+}
+
+func setupHeader(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+}
+
+var callAllApi = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	setupHeader(w, r)
 
 	cq := make(chan []api.Qiita)
 	cw := make(chan []api.CurrentWeather)
@@ -55,15 +70,7 @@ func callAllApi(w http.ResponseWriter, r *http.Request) {
 	}
 	response.Status = 200
 	json.NewEncoder(w).Encode(response)
-}
-
-type userResponse struct {
-	baseResponse
-	User struct {
-		Name  string `json:"name"`
-		Token string `json:"token"`
-	} `json:"user"`
-}
+})
 
 func userLogin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -105,8 +112,6 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(body, &posted)
 
-	fmt.Printf("%v\n", posted)
-
 	token, err := mysql.Register(posted)
 	if err != nil {
 		resp := new(errorResponse)
@@ -136,7 +141,7 @@ var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 func handleRequests() {
-	http.HandleFunc("/", callAllApi)
+	http.Handle("/", auth.JwtMiddleware.Handler((callAllApi)))
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
 	http.Handle("/test", auth.JwtMiddleware.Handler(testFunc))

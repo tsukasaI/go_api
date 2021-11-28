@@ -17,7 +17,9 @@ func CreateToken(name string) (string, error) {
 	claims["name"] = name
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 6).Unix()
-	fmt.Printf("claims: %v\n", claims)
+
+	test, _ := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
+	fmt.Printf("token: %v\n", test)
 
 	return token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 }
