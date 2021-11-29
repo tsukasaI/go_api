@@ -51,6 +51,7 @@ type QiitaJsonRes []struct {
 type Qiita struct {
 	Title string    `json:"title"`
 	Date  time.Time `json:"date"`
+	URL   string    `json:"url"`
 	Tags  []struct {
 		Name     string        `json:"name"`
 		Versions []interface{} `json:"versions"`
@@ -78,6 +79,7 @@ func FetchQiita(cq chan []Qiita) {
 		tmp := Qiita{
 			r.Title,
 			r.CreatedAt,
+			r.URL,
 			r.Tags,
 			r.Body,
 		}

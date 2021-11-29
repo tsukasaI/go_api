@@ -98,7 +98,6 @@ func Login(r RequestBody) (string, error) {
 		return "", fmt.Errorf("bcrypt: %w", err)
 	}
 
-	fmt.Println(err)
 	token, _ := auth.CreateToken(r.Name)
 
 	return token, err
