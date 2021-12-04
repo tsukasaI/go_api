@@ -1,4 +1,5 @@
 type User = {
+    id: number,
     name: String,
     token: String
 }
@@ -8,6 +9,7 @@ export const loginAction = (userState: User) => {
     return {
         type: "LOGIN",
         payload: {
+            id: userState.id,
             name: userState.name,
             token: userState.token,
         }

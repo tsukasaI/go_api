@@ -1,8 +1,9 @@
 import * as React from 'react'
 
 import { Navigate } from 'react-router-dom'
+import { loginAction } from 'reducks/user/actions'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getUserToken } from 'reducks/user/selectors'
 
 type Props = {
@@ -12,8 +13,24 @@ type Props = {
 
 const Auth = (props: Props) => {
   const selector = useSelector((state) => state)
-  const token = getUserToken(selector)
-  console.log(token)
+  let token = getUserToken(selector)
+  const dispatch = useDispatch()
+
+  if (token === '') {
+    token = sessionStorage.getItem('token') ?? ''
+    const name = sessionStorage.getItem('name') ?? ''
+    const id = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0
+    if (token !== '' && id !== 0 && name !== '') {
+      dispatch(loginAction({
+          id: id,
+          name: name,
+          token: token,
+        }))
+
+    }
+
+  }
+
 
   const publicPaths = ['/', '/login', '/register']
 

@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/form3tech-oss/jwt-go"
 	"github.com/joho/godotenv"
 )
 
@@ -135,22 +134,10 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var testFunc = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("%v\n", r.Context())
-	user := r.Context().Value("user")
-	fmt.Printf("%v\n", user)
-	fmt.Fprintf(w, "This is an authenticated request\n")
-	fmt.Fprintf(w, "Claim content:\n")
-	for k, v := range user.(*jwt.Token).Claims.(jwt.MapClaims) {
-		fmt.Fprintf(w, "%s :\t%#v\n", k, v)
-	}
-})
-
 func handleRequests() {
 	http.Handle("/", auth.JwtMiddleware.Handler((callAllApi)))
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
-	http.Handle("/test", auth.JwtMiddleware.Handler(testFunc))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

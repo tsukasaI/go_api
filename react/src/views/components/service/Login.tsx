@@ -31,6 +31,9 @@ const Login = () => {
         token: passwordRef.current?.value,
       })
       dispatch(loginAction(res.data.user))
+      sessionStorage.setItem('id', res.data.user.id)
+      sessionStorage.setItem('name', res.data.user.name)
+      sessionStorage.setItem('token', res.data.user.token)
       return <Navigate to="/home" />
     } catch (error) {
       console.log(error)

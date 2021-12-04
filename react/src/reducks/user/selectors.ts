@@ -11,3 +11,8 @@ export const getUserName = createSelector(
   [userSelector],
   state => state.name
 )
+
+export const getUserId = createSelector(
+  [userSelector],
+  state => state.id
+)

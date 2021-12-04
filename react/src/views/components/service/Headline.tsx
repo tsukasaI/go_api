@@ -43,8 +43,12 @@ const Headline = () => {
   const [response, setResponse] = useState<HeadlineResponse>()
   useEffect(() => {
     const fetchHeadline = async () => {
-      const res = await axios.get('http://localhost:8087/', { headers: { Authorization: "Bearer " + token } })
-      setResponse(res.data.result.coin.jpyRate)
+      try {
+        const res = await axios.get('http://localhost:8087/', { headers: { Authorization: "Bearer " + token } })
+        setResponse(res.data.result.coin.jpyRate)
+      } catch (e: any) {
+        alert(e.message)
+      }
     }
     fetchHeadline()
   }, [token])

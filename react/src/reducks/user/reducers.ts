@@ -1,7 +1,7 @@
 import * as Actions from './actions'
 import initialState from '../store/initialState'
 
-type ActionType = { type: String, payload: {name: String, token: String} }
+type ActionType = { type: String, payload: {id: number, name: String, token: String} }
 
 export const UserReducer = (state = initialState.user, action: ActionType) => {
   switch (action.type) {
