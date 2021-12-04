@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-
 import { Coin, Qiita, Weather } from 'views/components/service'
 
 import { useSelector } from 'react-redux'
@@ -53,21 +52,23 @@ const Headline = () => {
         setResponse(res.data.result)
       } catch (e: any) {
         alert(e.message)
+        alert('please login again')
       }
     }
     fetchHeadline()
   }, [token])
 
-    return response ? (
-      <div>
-        <Weather props={response.weather} />
+  return response ? (
+    <div>
+      <Weather props={response.weather} />
 
-        <Coin props={response.coin} />
+      <Coin props={response.coin} />
 
-        <Qiita props={response.qiita} />
-      </div>
-    ) : <div></div>
-
+      <Qiita props={response.qiita} />
+    </div>
+  ) : (
+    <div>...Loading</div>
+  )
 }
 
 export default Headline
