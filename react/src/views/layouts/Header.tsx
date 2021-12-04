@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Image } from 'views/components/base';
-import { Today } from 'views/components/util';
+import styled from 'styled-components'
+import { Image } from 'views/components/base'
+import { Today } from 'views/components/util'
 import { useSelector } from 'react-redux'
 import { getUserName } from 'reducks/user/selectors'
 
@@ -12,12 +12,12 @@ const CommonHeader = styled.header`
   height: 70px;
   display: flex;
   justify-content: space-between;
-  padding: 0 16px
+  padding: 0 16px;
 `
 
 const LogoWrapper = styled(Link)`
   display: block;
-  margin-left: 16px
+  margin-left: 16px;
 `
 
 const Greet = styled.div`
@@ -31,18 +31,18 @@ const Greet = styled.div`
   }
 `
 const message = (): string => {
-  const hour = (new Date()).getHours()
+  const hour = new Date().getHours()
   let message: string
   switch (true) {
     case hour < 5 || 17 < hour:
-      message = 'お疲れさまです。'
-      break;
+      message = 'Hi. '
+      break
     case hour < 10:
-      message = 'おはようございます。'
-      break;
+      message = 'Good Morning. '
+      break
     default:
-      message = 'こんにちは。'
-      break;
+      message = 'Hello. '
+      break
   }
   return message
 }
@@ -53,15 +53,18 @@ const Header = () => {
 
   return (
     <CommonHeader>
-      <Greet>
-        {name !== '' ? `${message()} ${name}様` : undefined}
-      </Greet>
+      <Greet>{name !== '' ? `${message()} ${name}` : undefined}</Greet>
 
-        <LogoWrapper to="/">
-          <Image src={`${process.env.PUBLIC_URL}/logo.gif`} alt="Logo" height="100%" width="auto" />
-        </LogoWrapper>
+      <LogoWrapper to="/">
+        <Image
+          src={`${process.env.PUBLIC_URL}/logo.gif`}
+          alt="Logo"
+          height="100%"
+          width="auto"
+        />
+      </LogoWrapper>
 
-        <Today />
+      <Today />
     </CommonHeader>
   )
 }
