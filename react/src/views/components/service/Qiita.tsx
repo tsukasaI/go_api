@@ -18,7 +18,7 @@ const Qiita = (props: any) => {
       <h1>qiita</h1>
       {props.props.map((v: any, key: number) => {
         return (
-          <Article>
+          <Article key={key}>
             <header>
               <Time>投稿日: {v.date.substr(0, 10)}</Time>
             </header>
@@ -43,9 +43,9 @@ const Qiita = (props: any) => {
             </h2>
             <footer className="mt-2">
               <p>
-                {v.tags.map((tag: any) => {
+                {v.tags.map((tag: any, key: number) => {
                   return (
-                    <span>
+                    <span key={key}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 inline"

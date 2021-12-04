@@ -9,18 +9,22 @@ const tempRound = (temp: number) => {
 }
 
 const Weather = (props: any) => {
+  const isRain = typeof props.props.filter((v: any, key: number) => key < 6).find((v: any) => v.weather === 'Rain') !== 'undefined'
   return (
-    <div>
-      <h1>左に傘が必要か表示</h1>
+    <div className="md:flex">
+      <p className="font">
+        Umbrella:
+        <b className={isRain ? 'text-red-600 text-xl' : 'text-gray-400 text-lg'}>{isRain ?  'Necessary' : 'Fine'}</b>
+      </p>
       <WeatherWrapper className="overflow-y-auto scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray scrolling-touch">
         <table className="table-auto">
           <thead>
             <tr>
-              <th className="px-4 py-2"></th>
-              <th className="px-4 py-2">Temp</th>
-              <th className="px-4 py-2">Feels</th>
-              <th className="px-4 py-2">Pressure</th>
-              <th className="px-4 py-2">Description</th>
+              <th className="px-3 py-2"></th>
+              <th className="px-3 py-2">Temp</th>
+              <th className="px-3 py-2">Feels</th>
+              <th className="px-3 py-2">Pressure</th>
+              <th className="px-3 py-2">Description</th>
             </tr>
           </thead>
           <tbody>
@@ -101,18 +105,18 @@ const Weather = (props: any) => {
 
               return (
                 <tr key={key} className={key % 2 === 0 ? '' : 'bg-gray-100'}>
-                  <td className="px-4 py-2 flex justify-center items-center">
+                  <td className="px-3 py-2 flex justify-center items-center">
                     {icon()}
                     {time}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-3 py-2">
                       <p>{tempRound(v.temp)} °C</p>
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-3 py-2">
                       <p>{tempRound(v.feel)} °C</p>
                   </td>
-                  <td className="px-4 py-2">{v.pressure} Pa</td>
-                  <td className="px-4 py-2">{v.description}</td>
+                  <td className="px-3 py-2">{v.pressure} Pa</td>
+                  <td className="px-3 py-2">{v.description}</td>
                 </tr>
               )
             })}
