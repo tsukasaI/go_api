@@ -1,40 +1,43 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react';
-// import styled from "styled-components";
+import { useEffect, useState } from 'react'
+
+import { Coin, Qiita, Weather } from 'views/components/service'
+
 import { useSelector } from 'react-redux'
 import { getUserToken } from 'reducks/user/selectors'
 
-
-type Coin = {
-  date: String,
-  jpyRate: Number,
-  usdRate: Number,
+type TypeCoin = {
+  date: String
+  jpyRate: Number
+  usdRate: Number
 }
 
-type Qiita = {
-  date: String,
-  description: String,
-  tags: [{
-    name: String,
-    versions: any
-  }],
-  title: String,
+type TypeQiita = {
+  date: String
+  description: String
+  tags: [
+    {
+      name: String
+      versions: any
+    }
+  ]
+  title: String
 }
 
-type Weather = {
-  description: String,
-  feel: Number,
-  humidity: Number,
-  pressure: Number,
-  temp: Number,
-  time: String,
-  weather: String,
+type TypeWeather = {
+  description: String
+  feel: Number
+  humidity: Number
+  pressure: Number
+  temp: Number
+  time: String
+  weather: String
 }
 
 type HeadlineResponse = {
-  coin: Coin,
-  weather: Weather[],
-  qiita: Qiita[],
+  coin: TypeCoin
+  weather: TypeWeather[]
+  qiita: TypeQiita[]
 }
 
 const Headline = () => {
@@ -44,20 +47,28 @@ const Headline = () => {
   useEffect(() => {
     const fetchHeadline = async () => {
       try {
-        const res = await axios.get('http://localhost:8087/', { headers: { Authorization: "Bearer " + token } })
-        setResponse(res.data.result.coin.jpyRate)
+        const res = await axios.get('http://localhost:8087/', {
+          headers: { Authorization: 'Bearer ' + token },
+        })
+        setResponse(res.data.result)
       } catch (e: any) {
         alert(e.message)
       }
     }
     fetchHeadline()
   }, [token])
+  console.log(response)
 
-  return (
-    <div>
-      <p>{ response }</p>
-    </div>
-  )
+    return response ? (
+      <div>
+        <Weather props={response.weather} />
+
+        <Coin props={response.coin} />
+
+        <Qiita props={response.qiita} />
+      </div>
+    ) : <div></div>
+
 }
 
-export default Headline;
+export default Headline

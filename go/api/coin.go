@@ -54,8 +54,8 @@ func FetchCoin(cc chan Coin) {
 
 	summary := Coin{
 		data.Time.UpdatedISO.Add(9 * time.Hour),
-		data.Bpi.Usd.RateFloat,
 		data.Bpi.Jpy.RateFloat,
+		data.Bpi.Usd.RateFloat,
 	}
 
 	cc <- summary
