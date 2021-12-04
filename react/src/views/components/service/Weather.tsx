@@ -9,9 +9,9 @@ const tempRound = (temp: number) => {
 }
 
 const Weather = (props: any) => {
-  // console.log(props.props)
   return (
     <div>
+      <h1>左に傘が必要か表示</h1>
       <WeatherWrapper className="overflow-y-auto scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray scrolling-touch">
         <table className="table-auto">
           <thead>
@@ -27,7 +27,6 @@ const Weather = (props: any) => {
             {props.props.map((v: any, key: number) => {
               const time = v.time.substr(5, 8).replace('-', '/') + '時'
 
-              console.log(v)
               const icon = () => {
                 switch (v.weather) {
                   case 'Clouds':
@@ -102,7 +101,7 @@ const Weather = (props: any) => {
 
               return (
                 <tr key={key} className={key % 2 === 0 ? '' : 'bg-gray-100'}>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 flex justify-center items-center">
                     {icon()}
                     {time}
                   </td>
