@@ -1,15 +1,11 @@
 import axios from 'axios'
 import { useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { loginAction } from 'reducks/user/actions'
 import { Input } from 'views/components/base'
 import styled from 'styled-components'
 
-type User = {
-  name: String
-  token: String
-}
 
 const RegisterWrapper = styled.div`
   width: 350px;
@@ -20,11 +16,9 @@ const Register = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const selector = useSelector((state: User) => state)
   const dispatch = useDispatch()
 
   const register = async () => {
-    console.log(!nameRef.current?.value)
     if (!nameRef.current?.value || !passwordRef.current?.value) {
       alert('nameとpasswordを入力してください')
       return
@@ -37,9 +31,7 @@ const Register = () => {
       dispatch(loginAction(res.data.user))
     } catch (error) {
       alert(error)
-      console.log(error)
     }
-    console.log(selector)
   }
 
   return (

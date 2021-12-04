@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -21,7 +21,6 @@ const Login = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const selector = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const login = async () => {
@@ -38,7 +37,6 @@ const Login = () => {
     } catch (error) {
       console.log(error)
     }
-    console.log(selector)
   }
 
   return (

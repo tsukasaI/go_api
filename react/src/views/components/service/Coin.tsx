@@ -8,7 +8,6 @@ const Bold = styled.b`
 
 
 const Coin = (props: any) => {
-  console.log(props.props)
   return (
     <div className="flex justify-center items-center">
       <Image src={`${process.env.PUBLIC_URL}/bitcoin-btc-logo.svg`} width="40" alt="bitcoin" />
