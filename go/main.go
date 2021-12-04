@@ -35,6 +35,7 @@ type allApiResponse struct {
 type userResponse struct {
 	baseResponse
 	User struct {
+		Id    int    `json:"id"`
 		Name  string `json:"name"`
 		Token string `json:"token"`
 	} `json:"user"`
@@ -80,7 +81,6 @@ var callAllApi = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 func userLogin(w http.ResponseWriter, r *http.Request) {
 	setupHeader(w, r)
 
-	// response := new(user)
 	body, _ := ioutil.ReadAll(r.Body)
 
 	var posted struct {
@@ -134,10 +134,17 @@ func userRegister(w http.ResponseWriter, r *http.Request) {
 
 }
 
+var check = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	setupHeader(w, r)
+	resp := baseResponse{Status: 200}
+	json.NewEncoder(w).Encode(resp)
+})
+
 func handleRequests() {
 	http.Handle("/", auth.JwtMiddleware.Handler((callAllApi)))
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
+	http.Handle("/check", auth.JwtMiddleware.Handler(check))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

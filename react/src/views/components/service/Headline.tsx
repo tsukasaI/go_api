@@ -57,7 +57,6 @@ const Headline = () => {
     }
     fetchHeadline()
   }, [token])
-  console.log(response)
 
     return response ? (
       <div>

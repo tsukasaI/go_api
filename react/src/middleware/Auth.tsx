@@ -1,4 +1,5 @@
 import * as React from 'react'
+import axios from 'axios'
 
 import { Navigate } from 'react-router-dom'
 import { loginAction } from 'reducks/user/actions'
@@ -11,6 +12,18 @@ type Props = {
   element: React.ReactElement<any, any>
 }
 
+const checkToken = async (token: string) => {
+  try {
+    console.log('axios called')
+    const res = await axios.get('http://localhost:8087/check', {
+      headers: { Authorization: 'Bearer ' + token },
+    })
+    return res.data.status === 200
+  } catch (e) {
+    return false
+  }
+}
+
 const Auth = (props: Props) => {
   const selector = useSelector((state) => state)
   let token = getUserToken(selector)
@@ -18,19 +31,21 @@ const Auth = (props: Props) => {
 
   if (token === '') {
     token = sessionStorage.getItem('token') ?? ''
-    const name = sessionStorage.getItem('name') ?? ''
-    const id = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0
-    if (token !== '' && id !== 0 && name !== '') {
-      dispatch(loginAction({
+    if (token && checkToken(token)) {
+      const name = sessionStorage.getItem('name') ?? ''
+      const id = sessionStorage.getItem('id')
+        ? Number(sessionStorage.getItem('id'))
+        : 0
+
+      dispatch(
+        loginAction({
           id: id,
           name: name,
           token: token,
-        }))
-
+        })
+      )
     }
-
   }
-
 
   const publicPaths = ['/', '/login', '/register']
 
