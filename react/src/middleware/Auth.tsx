@@ -1,5 +1,5 @@
 import * as React from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 
 import { Navigate } from 'react-router-dom'
 import { loginAction } from 'reducks/user/actions'
