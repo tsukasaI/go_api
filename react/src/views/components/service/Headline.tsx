@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Coin, Qiita, Weather } from 'views/components/service'
 
+
 import { useSelector } from 'react-redux'
 import { getUserToken } from 'reducks/user/selectors'
 
@@ -58,6 +59,11 @@ const Headline = () => {
     fetchHeadline()
   }, [token])
 
+  const logout = () => {
+    sessionStorage.clear()
+    window.location.href = '/login'
+  }
+
   return response ? (
     <div>
       <Weather props={response.weather} />
@@ -67,7 +73,16 @@ const Headline = () => {
       <Qiita props={response.qiita} />
     </div>
   ) : (
-    <div>...Loading</div>
+    <div>
+      ...Loading
+      <p>Anything Wrong?</p>
+      <button
+        onClick={logout}
+        className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded block"
+      >
+        Logout
+      </button>
+    </div>
   )
 }
 

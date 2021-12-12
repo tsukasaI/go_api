@@ -12,17 +12,17 @@ type Props = {
   element: React.ReactElement<any, any>
 }
 
-const checkToken = async (token: string) => {
-  try {
-    console.log('axios called')
-    const res = await axios.get('http://localhost:8087/check', {
-      headers: { Authorization: 'Bearer ' + token },
-    })
-    return res.data.status === 200
-  } catch (e) {
-    return false
-  }
-}
+// const checkToken = async (token: string) => {
+//   try {
+//     console.log('axios called')
+//     const res = await axios.get('http://localhost:8087/check', {
+//       headers: { Authorization: 'Bearer ' + token },
+//     })
+//     return res.data.status === 200
+//   } catch (e) {
+//     return false
+//   }
+// }
 
 const Auth = (props: Props) => {
   const selector = useSelector((state) => state)
@@ -31,7 +31,7 @@ const Auth = (props: Props) => {
 
   if (token === '') {
     token = sessionStorage.getItem('token') ?? ''
-    if (token && checkToken(token)) {
+    if (token !== '') {
       const name = sessionStorage.getItem('name') ?? ''
       const id = sessionStorage.getItem('id')
         ? Number(sessionStorage.getItem('id'))
