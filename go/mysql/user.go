@@ -17,7 +17,7 @@ import (
 func EnvLoad() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env file: %q", err)
 	}
 }
 
@@ -101,4 +101,25 @@ func Login(r RequestBody) (string, error) {
 	token, _ := auth.CreateToken(r.Name)
 
 	return token, err
+}
+
+func Delete(name string) error {
+	EnvLoad()
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(mysql)/%s",
+		os.Getenv("MYSQL_USER"),
+		os.Getenv("MYSQL_PASSWORD"),
+		os.Getenv("MYSQL_DATABASE"),
+	)
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return fmt.Errorf("mysql connection error: %w", err)
+	}
+	defer db.Close()
+
+	_, err = db.Exec("delete from `users` where `name` = ?", name)
+	if err != nil {
+		return fmt.Errorf("query execution error: %w", err)
+	}
+	return nil
 }
