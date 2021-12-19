@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const WeatherWrapper = styled.div`
-  max-height: 200px
+  max-height: 200px;
 `
 
 const tempRound = (temp: number) => {
@@ -11,7 +11,7 @@ const tempRound = (temp: number) => {
 const Weather = (props: any) => {
   const isRain = typeof props.props.filter((v: any, key: number) => key < 6).find((v: any) => v.weather === 'Rain') !== 'undefined'
   return (
-    <div className="md:flex">
+    <div className="md:flex md:justify-center m-4">
       <p className="font">
         Umbrella:
         <b className={isRain ? 'text-red-600 text-xl' : 'text-gray-400 text-lg'}>{isRain ?  'Necessary' : 'Fine'}</b>

@@ -15,7 +15,7 @@ const Time = styled.time`
 const Qiita = (props: any) => {
   return (
     <div>
-      <h1>qiita</h1>
+      <h1 className="ml-2">Today's Qiita</h1>
       {props.props.map((v: any, key: number) => {
         return (
           <Article key={key}>
