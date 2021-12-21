@@ -48,8 +48,8 @@ func setupHeader(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Access-Control-Allow-Origin", os.Getenv("ALLOW_ORIGIN"))
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", os.Getenv("ALLOW_METHIODS"))
-	w.Header().Set("Access-Control-Allow-Headers", os.Getenv("ALLOW_HEDERS"))
+	w.Header().Set("Access-Control-Allow-Methods", os.Getenv("ALLOW_METHODS"))
+	w.Header().Set("Access-Control-Allow-Headers", os.Getenv("ALLOW_HEADERS"))
 }
 
 var callAllApi = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
