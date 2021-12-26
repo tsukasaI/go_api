@@ -47,7 +47,7 @@ const Headline = () => {
   useEffect(() => {
     const fetchHeadline = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/headline`, {
           headers: { Authorization: 'Bearer ' + token },
         })
         setResponse(res.data.result)

@@ -140,8 +140,16 @@ var check = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 })
 
+func root(w http.ResponseWriter, r *http.Request) {
+	setupHeader(w, r)
+	resp := baseResponse{Status: 200}
+	json.NewEncoder(w).Encode(resp)
+
+}
+
 func handleRequests() {
-	http.Handle("/", auth.JwtMiddleware.Handler((callAllApi)))
+	http.HandleFunc("/", root)
+	http.Handle("/headline", auth.JwtMiddleware.Handler((callAllApi)))
 	http.HandleFunc("/login", userLogin)
 	http.HandleFunc("/register", userRegister)
 	http.Handle("/check", auth.JwtMiddleware.Handler(check))
