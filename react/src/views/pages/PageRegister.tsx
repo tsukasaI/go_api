@@ -20,7 +20,7 @@ const Register = () => {
 
   const register = async () => {
     if (!nameRef.current?.value || !passwordRef.current?.value) {
-      alert('nameとpasswordを入力してください')
+      alert('input name and password')
       return
     }
     try {

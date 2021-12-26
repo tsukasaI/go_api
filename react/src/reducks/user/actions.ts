@@ -6,10 +6,10 @@ type User = {
 
 export const LOGIN: string = "LOGIN"
 export const loginAction = (userState: User) => {
+    console.log(userState)
     return {
         type: "LOGIN",
         payload: {
-            id: userState.id,
             name: userState.name,
             token: userState.token,
         }
